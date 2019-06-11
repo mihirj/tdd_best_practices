@@ -7,19 +7,17 @@ sealed class AuthenticationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CreateUserEvent extends AuthenticationEvent {
-  const CreateUserEvent({
-    required this.createdAt,
-    required this.name,
-    required this.avatar,
+class LoginUserEvent extends AuthenticationEvent {
+  const LoginUserEvent({
+    required this.email,
+    required this.password,
   });
 
-  final String createdAt;
-  final String name;
-  final String avatar;
+  final String email;
+  final String password;
 
   @override
-  List<Object?> get props => [createdAt, name, avatar];
+  List<Object?> get props => [email, password];
 }
 
 class GetUserEvent extends AuthenticationEvent {

@@ -5,39 +5,39 @@ import 'package:tdd_practice/src/authentication/domain/entities/user.dart';
 
 class UserModel extends User {
   const UserModel({
-    required super.avatar,
+    required super.profileImage,
     required super.id,
     required super.createdAt,
-    required super.name,
+    required super.firstName,
   });
 
   UserModel copyWith({
     String? id,
     String? createdAt,
-    String? name,
-    String? avatar,
+    String? firstName,
+    String? profileImage,
   }) {
     return UserModel(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
-      name: name ?? this.name,
-      avatar: avatar ?? this.avatar,
+      firstName: firstName ?? this.firstName,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 
   DataMap toMap() => {
         'id': id,
         'createdAt': createdAt,
-        'name': name,
-        'avatar': avatar,
+        'first_name': firstName,
+        'profile_image': profileImage,
       };
 
   UserModel.fromMap(DataMap map)
       : this(
           id: map['id'] as String,
           createdAt: map['createdAt'] as String,
-          name: map['name'] as String,
-          avatar: map['avatar'] as String,
+          firstName: map['first_name'] as String,
+          profileImage: map['profile_image'] as String,
         );
 
   factory UserModel.fromJson(String source) =>
@@ -49,7 +49,7 @@ class UserModel extends User {
       : this(
           id: "1",
           createdAt: '_empty.createdAt',
-          name: '_empty.name',
-          avatar: '_empty.avatar',
+          firstName: '_empty.firstName',
+          profileImage: '_empty.profileImage',
         );
 }

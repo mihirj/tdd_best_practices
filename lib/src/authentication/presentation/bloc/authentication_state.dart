@@ -11,16 +11,16 @@ final class AuthenticationInitial extends AuthenticationState {
   const AuthenticationInitial();
 }
 
-class CreatingUser extends AuthenticationState {
-  const CreatingUser();
+class LogginUser extends AuthenticationState {
+  const LogginUser();
 }
 
 class GettingUsers extends AuthenticationState {
   const GettingUsers();
 }
 
-class UserCreated extends AuthenticationState {
-  const UserCreated();
+class UserLoggedIn extends AuthenticationState {
+  const UserLoggedIn();
 }
 
 class UsersLoaded extends AuthenticationState {

@@ -4,23 +4,23 @@ class User extends Equatable {
   const User({
     required this.id,
     required this.createdAt,
-    required this.name,
-    required this.avatar,
+    required this.firstName,
+    required this.profileImage,
   });
 
   const User.empty()
       : this(
           id: "1",
           createdAt: '_empty.createdAt',
-          name: '_empty.name',
-          avatar: '_empty.avatar',
+          firstName: '_empty.name',
+          profileImage: '_empty.avatar',
         );
 
   final String id;
   final String createdAt;
-  final String name;
-  final String avatar;
+  final String firstName;
+  final String profileImage;
 
   @override
-  List<Object?> get props => [id, name, avatar];
+  List<Object?> get props => [id, firstName, profileImage];
 }

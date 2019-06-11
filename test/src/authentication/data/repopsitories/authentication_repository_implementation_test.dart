@@ -33,7 +33,7 @@ void main() {
       () async {
         // arrange
         when(
-          () => remoteDataSource.createUser(
+          () => remoteDataSource.loginUser(
             createdAt: any(named: 'createdAt'),
             name: any(named: 'name'),
             avatar: any(named: 'avatar'),
@@ -51,7 +51,7 @@ void main() {
         //assert
         expect(result, equals(const Right(null)));
         verify(
-          () => remoteDataSource.createUser(
+          () => remoteDataSource.loginUser(
               createdAt: createdAt, name: name, avatar: avatar),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
@@ -64,7 +64,7 @@ void main() {
       () async {
         // arrange
         when(
-          () => remoteDataSource.createUser(
+          () => remoteDataSource.loginUser(
             createdAt: any(named: 'createdAt'),
             name: any(named: 'name'),
             avatar: any(named: 'avatar'),
@@ -88,7 +88,7 @@ void main() {
         );
 
         verify(
-          () => remoteDataSource.createUser(
+          () => remoteDataSource.loginUser(
               createdAt: createdAt, name: name, avatar: avatar),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);

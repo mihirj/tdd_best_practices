@@ -3,20 +3,20 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tdd_practice/core/errors/failure.dart';
-import 'package:tdd_practice/src/authentication/domain/usecases/create_user.dart';
 import 'package:tdd_practice/src/authentication/domain/usecases/get_users.dart';
+import 'package:tdd_practice/src/authentication/domain/usecases/login_user.dart';
 import 'package:tdd_practice/src/authentication/presentation/cubit/authentication_cubit.dart';
 
 class MockGetUsers extends Mock implements GetUsers {}
 
-class MockCreateUser extends Mock implements CreateUser {}
+class MockCreateUser extends Mock implements LoginUser {}
 
 void main() {
   late GetUsers getUsers;
-  late CreateUser createUser;
+  late LoginUser createUser;
   late AuthenticationCubit cubit;
 
-  const tCreateUserParams = CreateUserParams.empty();
+  const tCreateUserParams = LoginUserParams.empty();
 
   const tAPIFailure = APIFailure(message: 'message', statusCode: 400);
 
@@ -36,7 +36,7 @@ void main() {
   group(
     'createUser',
     () {
-      blocTest<AuthenticationCubit, AuthenticationState>(
+      blocTest<AuthenticationCubit, AuthenticationCState>(
         'should emit [CreatingUser, UserCreated] when successful',
         build: () {
           when(() => createUser(any())).thenAnswer(
@@ -46,8 +46,8 @@ void main() {
         },
         act: (cubit) => cubit.createUser(
           createdAt: tCreateUserParams.createdAt,
-          name: tCreateUserParams.name,
-          avatar: tCreateUserParams.avatar,
+          name: tCreateUserParams.firstName,
+          avatar: tCreateUserParams.profileImage,
         ),
         expect: () => const [
           CreatingUser(),
@@ -58,7 +58,7 @@ void main() {
           verifyNoMoreInteractions(createUser);
         },
       );
-      blocTest<AuthenticationCubit, AuthenticationState>(
+      blocTest<AuthenticationCubit, AuthenticationCState>(
         'should emit [CreatingUser,AuthenticationError] when unsuccessful',
         build: () {
           when(() => createUser(any())).thenAnswer(
@@ -69,8 +69,8 @@ void main() {
         act: (cubit) {
           cubit.createUser(
             createdAt: tCreateUserParams.createdAt,
-            name: tCreateUserParams.name,
-            avatar: tCreateUserParams.avatar,
+            name: tCreateUserParams.firstName,
+            avatar: tCreateUserParams.profileImage,
           );
         },
         expect: () => [
@@ -87,7 +87,7 @@ void main() {
   group(
     'getUsers',
     () {
-      blocTest<AuthenticationCubit, AuthenticationState>(
+      blocTest<AuthenticationCubit, AuthenticationCState>(
         'should emit [GettingUsers, UsersLoaded] when successful',
         build: () {
           when(() => getUsers()).thenAnswer((_) async => const Right([]));
@@ -100,7 +100,7 @@ void main() {
           verifyNoMoreInteractions(getUsers);
         },
       );
-      blocTest<AuthenticationCubit, AuthenticationState>(
+      blocTest<AuthenticationCubit, AuthenticationCState>(
         'should emit [GettingUsers, AuthenticationError] when unsuccessful',
         build: () {
           when(() => getUsers())

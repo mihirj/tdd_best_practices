@@ -1,17 +1,16 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:tdd_practice/core/errors/exceptions.dart';
-import 'package:tdd_practice/core/utils/constants.dart';
 import 'package:tdd_practice/src/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:tdd_practice/src/authentication/data/models/user_model.dart';
 
-class MockClient extends Mock implements http.Client {}
+class MockClient extends Mock implements Dio {}
 
 void main() {
-  late http.Client client;
+  late Dio client;
   late AuthenticationRemoteDataSource remoteDataSource;
 
   setUp(() {
@@ -26,30 +25,43 @@ void main() {
       test(
         'should complete successfully when the status code is 200 or 201',
         () async {
-          when(() => client.post(any(), body: any(named: 'body'))).thenAnswer(
-            (_) async => http.Response('User created successfully', 201),
+          // Arrange
+          when(
+            () => client.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: kCreateUserEndpoint),
+              data: 'User created successfully',
+              statusCode: 201,
+            ),
           );
 
-          final methodCall = remoteDataSource.createUser;
-
+          // Act & Assert
           expect(
-              methodCall(
-                createdAt: 'createdAt',
-                name: 'name',
-                avatar: 'avatar',
-              ),
-              completes);
+            remoteDataSource.loginUser(
+              createdAt: 'createdAt',
+              name: 'name',
+              avatar: 'avatar',
+            ),
+            completes,
+          );
 
           verify(
             () => client.post(
-              Uri.https(kBaseUrl, kCreateUserEndpoint),
-              body: jsonEncode({
+              kCreateUserEndpoint,
+              data: jsonEncode({
                 'createdAt': 'createdAt',
                 'name': 'name',
                 'avatar': 'avatar',
               }),
+              options: any(named: 'options'),
             ),
           ).called(1);
+
           verifyNoMoreInteractions(client);
         },
       );
@@ -57,12 +69,24 @@ void main() {
       test(
         'should throw [APIException] when the status code is not 200 or 201',
         () async {
-          when(() => client.post(any(), body: any(named: 'body'))).thenAnswer(
-              (_) async => http.Response('Invalid email address', 400));
+          // Arrange
+          when(
+            () => client.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: kCreateUserEndpoint),
+              data: 'Invalid email address',
+              statusCode: 400,
+            ),
+          );
 
-          final methodCall = remoteDataSource.createUser;
+          // Act & Assert
           expect(
-            () => methodCall(
+            () => remoteDataSource.loginUser(
               createdAt: 'createdAt',
               name: 'name',
               avatar: 'avatar',
@@ -75,38 +99,59 @@ void main() {
 
           verify(
             () => client.post(
-              Uri.https(kBaseUrl, kCreateUserEndpoint),
-              body: jsonEncode({
+              kCreateUserEndpoint,
+              data: jsonEncode({
                 'createdAt': 'createdAt',
                 'name': 'name',
                 'avatar': 'avatar',
               }),
+              options: any(named: 'options'),
             ),
           ).called(1);
+
           verifyNoMoreInteractions(client);
         },
       );
     },
+
+
+    
   );
 
   group(
     'getUsers',
     () {
+      
       const tUsers = [UserModel.empty()];
       test(
         'should return [List<User>] when the status code is 200',
         () async {
-          when(() => client.get(any())).thenAnswer(
-            (_) async => http.Response(jsonEncode([tUsers.first.toMap()]), 200),
+          // Arrange
+          when(
+            () => client.get(
+              any(),
+              options: any(named: 'options'),
+            ),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: kGetUserEndpoint),
+              data: jsonEncode([tUsers.first.toMap()]),
+              statusCode: 200,
+            ),
           );
 
+          // Act
           final result = await remoteDataSource.getUsers();
 
+          // Assert
           expect(result, equals(tUsers));
 
-          verify(() => client.get(
-                Uri.https(kBaseUrl, kGetUserEndpoint),
-              )).called(1);
+          verify(
+            () => client.get(
+              kGetUserEndpoint,
+              options: any(named: 'options'),
+            ),
+          ).called(1);
           verifyNoMoreInteractions(client);
         },
       );
@@ -114,22 +159,35 @@ void main() {
       test(
         'should throw [APIException] when the status code is not 200',
         () async {
+          // Arrange
           const tMessage = 'Server down, server down, ohhh my God!!!';
-          when(() => client.get(any())).thenAnswer(
-            (_) async => http.Response(tMessage, 500),
+          when(
+            () => client.get(
+              any(),
+              options: any(named: 'options'),
+            ),
+          ).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(path: kGetUserEndpoint),
+              data: tMessage,
+              statusCode: 500,
+            ),
           );
 
-          final methodCall = remoteDataSource.getUsers;
-
+          // Act & Assert
           expect(
-              () => methodCall(),
-              throwsA(
-                const APIException(message: tMessage, statusCode: 500),
-              ));
+            () => remoteDataSource.getUsers(),
+            throwsA(
+              const APIException(message: tMessage, statusCode: 500),
+            ),
+          );
 
-          verify(() => client.get(
-                Uri.https(kBaseUrl, kGetUserEndpoint),
-              )).called(1);
+          verify(
+            () => client.get(
+              kGetUserEndpoint,
+              options: any(named: 'options'),
+            ),
+          ).called(1);
           verifyNoMoreInteractions(client);
         },
       );
