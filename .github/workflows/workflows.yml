@@ -1,0 +1,34 @@
+name: github-yml-pre-merge
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/**'
+
+jobs:
+  pre-merge:
+    runs-on: self-hosted
+    timeout-minutes: 1
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            .github
+
+      - name: Yaml Lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .github/**/*.yml
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                level: warning
