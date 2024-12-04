@@ -35,4 +35,3 @@ jobs:
             rules:
               line-length:
                 level: warning
-
