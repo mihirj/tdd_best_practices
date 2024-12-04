@@ -16,7 +16,8 @@ class CreateUser extends UsecaseWithParam<void, CreateUserParams> {
       );
 }
 
-class CreateUserParams extends Equatable {
+class CreateUserParams
+    extends Equatable {
   final String createdAt;
   final String name;
   final String avatar;
