@@ -17,6 +17,9 @@ jobs:
     timeout-minutes: 1
 
     steps:
+      - name: Enable partial clone
+        run: git config --global extensions.partialClone true
+
       - name: Git Checkout
         uses: actions/checkout@v3
         with:
