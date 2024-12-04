@@ -1,0 +1,53 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.3"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run dart format
+        run: >
+          for f
+          in $(git diff origin/development..HEAD --relative --name-only -- lib/ test/ | grep '\.dart$') ;
+          do dart format --set-exit-if-changed $f ; done
+
+      - name: Check Flutter for errors
+        run: flutter analyze --no-fatal-infos
+
+      - name: Run Flutter tests
+        id: run_flutter_tests
+        run: flutter test
+
+      - name: Fail check if tests failed
+        if: steps.run_flutter_tests.outcome != 'success'
+        run: echo 'Flutter tests failed, failing job'; exit 1
