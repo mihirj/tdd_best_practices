@@ -42,7 +42,7 @@ jobs:
           do dart format --set-exit-if-changed $f ; done
 
       - name: Check Flutter for errors
-        run: flutter analyze --no-fatal-infos
+        run: flutter analyze
 
       - name: Run Flutter tests
         id: run_flutter_tests
