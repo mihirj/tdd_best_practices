@@ -5,7 +5,7 @@ import 'package:tdd_practice/src/authentication/domain/entities/user.dart';
 import 'package:tdd_practice/src/authentication/domain/repositories/authentication_repository.dart';
 import 'package:tdd_practice/src/authentication/domain/usecases/get_users.dart';
 
-import 'authentication_repostitory.mock.dart';
+import 'authentication_repository.mock.dart';
 
 void main() {
   late AuthenticationRepository repository;

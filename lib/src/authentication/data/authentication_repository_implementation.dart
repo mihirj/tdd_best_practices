@@ -5,10 +5,11 @@ import 'package:tdd_practice/src/authentication/domain/repositories/authenticati
 class AuthenticationRepositoryImplementation
     implements AuthenticationRepository {
   @override
-  ResultVoid createUser(
-      {required String createAt,
-      required String name,
-      required String avatar}) {
+  ResultVoid createUser({
+    required String createdAt,
+    required String name,
+    required String avatar,
+  }) {
     // TODO: implement createUser
     throw UnimplementedError();
   }
