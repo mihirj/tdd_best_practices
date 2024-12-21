@@ -22,7 +22,7 @@ void main() {
     // STUB
     when(
       () => repository.createUser(
-        createdAt: any(named: 'createAt'),
+        createdAt: any(named: 'createdAt'),
         name: any(named: 'name'),
         avatar: any(named: 'avatar'),
       ),
