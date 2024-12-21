@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:tdd_practice/src/authentication/domain/repositories/authentication_repository.dart';
 import 'package:tdd_practice/src/authentication/domain/usecases/create_user.dart';
 
-import 'authentication_repostitory.mock.dart';
+import 'authentication_repository.mock.dart';
 
 void main() {
   late CreateUser usecase;
@@ -22,7 +22,7 @@ void main() {
     // STUB
     when(
       () => repository.createUser(
-        createAt: any(named: 'createAt'),
+        createdAt: any(named: 'createAt'),
         name: any(named: 'name'),
         avatar: any(named: 'avatar'),
       ),
@@ -35,7 +35,7 @@ void main() {
     expect(result, equals(const Right<dynamic, void>(null)));
     verify(
       () => repository.createUser(
-        createAt: params.createdAt,
+        createdAt: params.createdAt,
         name: params.name,
         avatar: params.avatar,
       ),

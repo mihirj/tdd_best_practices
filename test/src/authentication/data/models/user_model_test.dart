@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tdd_practice/core/utils/typedef.dart';
-import 'package:tdd_practice/src/authentication/data/user_models.dart';
+import 'package:tdd_practice/src/authentication/data/models/user_model.dart';
 import 'package:tdd_practice/src/authentication/domain/entities/user.dart';
 
-import '../../../fixtures/fixture_reader.dart';
+import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   const tModel = UserModel.empty();
