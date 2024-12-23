@@ -40,6 +40,10 @@ void main() {
           ),
         ).thenAnswer((_) async => Future.value());
 
+        const createdAt = 'whatever.createdAt';
+        const name = 'whatever.name';
+        const avatar = 'whatever.avatar';
+
         //act
         final result = await repoImpl.createUser(
             createdAt: createdAt, name: name, avatar: avatar);
