@@ -38,7 +38,7 @@ jobs:
       - name: Run dart format
         run: >
           for f
-          in $(git diff origin/development..HEAD --relative --name-only -- lib/ test/ | grep '\.dart$') ;
+          in $(git diff origin/main..HEAD --relative --name-only -- lib/ test/ | grep '\.dart$') ;
           do dart format --set-exit-if-changed $f ; done
 
       - name: Check Flutter for errors
