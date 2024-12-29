@@ -31,5 +31,5 @@ Future<void> init() async {
     )
 
     // External Dependencies
-    ..registerLazySingleton(() => http.Client.new);
+    ..registerLazySingleton(http.Client.new);
 }
