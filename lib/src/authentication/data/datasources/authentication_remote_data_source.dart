@@ -31,8 +31,6 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
           data: jsonEncode({
             'email': email,
             'password': password,
-            "device_id": "f415df4g5-gf54d5g45-dfd",
-            "device_type": "android"
           }),
           options: Options(headers: {'Content-Type': 'application/json'}));
 

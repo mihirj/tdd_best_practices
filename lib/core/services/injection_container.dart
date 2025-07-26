@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tdd_practice/core/config/env_config.dart';
 import 'package:tdd_practice/src/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:tdd_practice/src/authentication/data/repositories/authentication_repository_implementation.dart';
 import 'package:tdd_practice/src/authentication/domain/repositories/authentication_repository.dart';
@@ -33,10 +33,12 @@ Future<void> init() async {
 
     // External Dependencies
     ..registerLazySingleton(() => Dio(BaseOptions(
-            baseUrl: EnvConfig.baseUrl,
-            connectTimeout: EnvConfig.defaultTimeout,
-            receiveTimeout: EnvConfig.defaultTimeout,
+            baseUrl: dotenv.env['API_BASE_URL'] ?? '',
+            connectTimeout: const Duration(seconds: 15),
+            receiveTimeout: const Duration(seconds: 15),
             headers: {
-              "Authorization": "Bearer ${EnvConfig.apiKey}",
+              "Authorization": "Bearer ${dotenv.env['STATIC_API_KEY'] ?? ''}",
             })));
+
+  await dotenv.load();
 }

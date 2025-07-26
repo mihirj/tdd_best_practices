@@ -38,44 +38,46 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          body: state is GettingUsers
-              ? const LoadingColumn(message: 'Fetching users')
-              : state is LogginUser
-                  ? const LoadingColumn(message: 'Creating users')
-                  : Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          TextField(
-                            controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                              hintText: 'Email',
+          body: SafeArea(
+            child: state is GettingUsers
+                ? const LoadingColumn(message: 'Fetching users')
+                : state is LogginUser
+                    ? const LoadingColumn(message: 'Creating users')
+                    : Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                hintText: 'Email',
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          TextField(
-                            controller: passwordController,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: const InputDecoration(
-                              hintText: 'Password',
+                            const SizedBox(height: 8),
+                            TextField(
+                              controller: passwordController,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration: const InputDecoration(
+                                hintText: 'Password',
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<AuthenticationBloc>().add(
-                                    LoginUserEvent(
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                    ),
-                                  );
-                            },
-                            child: const Text('Login'),
-                          ),
-                        ],
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () {
+                                context.read<AuthenticationBloc>().add(
+                                      LoginUserEvent(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      ),
+                                    );
+                              },
+                              child: const Text('Login'),
+                            ),
+                          ],
+                        ),
                       ),
-                    )
+          )
           /*Center(
                           child: ListView.builder(
                             itemCount: state.users.length,
