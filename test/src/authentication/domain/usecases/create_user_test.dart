@@ -2,20 +2,20 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tdd_practice/src/authentication/domain/repositories/authentication_repository.dart';
-import 'package:tdd_practice/src/authentication/domain/usecases/login_user.dart';
+import 'package:tdd_practice/src/authentication/domain/usecases/create_user.dart';
 
 import 'authentication_repository.mock.dart';
 
 void main() {
-  late LoginUser usecase;
+  late CreateUser usecase;
   late AuthenticationRepository repository;
 
   setUp(() {
     repository = MockAuthRepo();
-    usecase = LoginUser(repository);
+    usecase = CreateUser(repository);
   });
 
-  const params = LoginUserParams.empty();
+  const params = CreateUserParams.empty();
 
   test('should call the [AuthRepo.createUser]', () async {
     //Arrange
@@ -36,8 +36,8 @@ void main() {
     verify(
       () => repository.createUser(
         createdAt: params.createdAt,
-        name: params.firstName,
-        avatar: params.profileImage,
+        name: params.name,
+        avatar: params.avatar,
       ),
     ).called(1);
 

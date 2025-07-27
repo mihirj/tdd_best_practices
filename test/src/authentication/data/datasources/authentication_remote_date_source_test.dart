@@ -26,23 +26,21 @@ void main() {
         'should complete successfully when the status code is 200 or 201',
         () async {
           // Arrange
-          when(
-            () => client.post(
-              any(),
-              data: any(named: 'data'),
-              options: any(named: 'options'),
-            ),
-          ).thenAnswer(
+          when(() => client.post(
+                any(),
+                data: any(named: 'data'),
+                options: any(named: 'options'),
+              )).thenAnswer(
             (_) async => Response(
               requestOptions: RequestOptions(path: kCreateUserEndpoint),
-              data: 'User created successfully',
+              data: ('User created successfully'),
               statusCode: 201,
             ),
           );
 
           // Act & Assert
           expect(
-            remoteDataSource.loginUser(
+            remoteDataSource.createUser(
               createdAt: 'createdAt',
               name: 'name',
               avatar: 'avatar',
@@ -86,7 +84,7 @@ void main() {
 
           // Act & Assert
           expect(
-            () => remoteDataSource.loginUser(
+            () => remoteDataSource.createUser(
               createdAt: 'createdAt',
               name: 'name',
               avatar: 'avatar',
@@ -113,15 +111,11 @@ void main() {
         },
       );
     },
-
-
-    
   );
 
   group(
     'getUsers',
     () {
-      
       const tUsers = [UserModel.empty()];
       test(
         'should return [List<User>] when the status code is 200',
@@ -133,11 +127,13 @@ void main() {
               options: any(named: 'options'),
             ),
           ).thenAnswer(
-            (_) async => Response(
-              requestOptions: RequestOptions(path: kGetUserEndpoint),
-              data: jsonEncode([tUsers.first.toMap()]),
-              statusCode: 200,
-            ),
+            (_) async {
+              return Response(
+                requestOptions: RequestOptions(path: kGetUserEndpoint),
+                data: jsonEncode([tUsers.first.toMap()]),
+                statusCode: 200,
+              );
+            },
           );
 
           // Act
@@ -147,10 +143,7 @@ void main() {
           expect(result, equals(tUsers));
 
           verify(
-            () => client.get(
-              kGetUserEndpoint,
-              options: any(named: 'options'),
-            ),
+            () => client.get(kGetUserEndpoint),
           ).called(1);
           verifyNoMoreInteractions(client);
         },

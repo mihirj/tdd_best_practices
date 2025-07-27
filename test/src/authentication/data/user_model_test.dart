@@ -71,10 +71,10 @@ void main() {
   group('copyWith)', () {
     test('should return a [UserModel] with different data', () {
       //   Act
-      final result = tModel.copyWith(firstName: 'Mihir');
+      final result = tModel.copyWith(name: 'Mihir');
 
       // Assert
-      expect(result.firstName, equals('Mihir'));
+      expect(result.name, equals('Mihir'));
     });
   });
 }

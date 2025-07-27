@@ -33,7 +33,7 @@ void main() {
       () async {
         // arrange
         when(
-          () => remoteDataSource.loginUser(
+          () => remoteDataSource.createUser(
             createdAt: any(named: 'createdAt'),
             name: any(named: 'name'),
             avatar: any(named: 'avatar'),
@@ -46,12 +46,15 @@ void main() {
 
         //act
         final result = await repoImpl.createUser(
-            createdAt: createdAt, name: name, avatar: avatar);
+          createdAt: createdAt,
+          name: name,
+          avatar: avatar,
+        );
 
         //assert
         expect(result, equals(const Right(null)));
         verify(
-          () => remoteDataSource.loginUser(
+          () => remoteDataSource.createUser(
               createdAt: createdAt, name: name, avatar: avatar),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
@@ -64,7 +67,7 @@ void main() {
       () async {
         // arrange
         when(
-          () => remoteDataSource.loginUser(
+          () => remoteDataSource.createUser(
             createdAt: any(named: 'createdAt'),
             name: any(named: 'name'),
             avatar: any(named: 'avatar'),
@@ -88,8 +91,11 @@ void main() {
         );
 
         verify(
-          () => remoteDataSource.loginUser(
-              createdAt: createdAt, name: name, avatar: avatar),
+          () => remoteDataSource.createUser(
+            createdAt: createdAt,
+            name: name,
+            avatar: avatar,
+          ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },

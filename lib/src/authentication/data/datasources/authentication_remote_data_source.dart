@@ -6,15 +6,15 @@ import 'package:tdd_practice/core/utils/typedef.dart';
 import 'package:tdd_practice/src/authentication/data/models/user_model.dart';
 
 abstract class AuthenticationRemoteDataSource {
-  Future<void> loginUser({
-    required String email,
-    required String password,
+  Future<void> createUser({
+    required String createdAt,
+    required String name,
+    required String avatar,
   });
 
   Future<List<UserModel>> getUsers();
 }
 
-const kLoginUserEndpoint = '/auth/provider/login';
 const kCreateUserEndpoint = '/test-api/users';
 const kGetUserEndpoint = '/test-api/users';
 
@@ -24,13 +24,16 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   final Dio _dio;
 
   @override
-  Future<void> loginUser(
-      {required String email, required String password}) async {
+  Future<void> createUser(
+      {required String createdAt,
+      required String name,
+      required String avatar}) async {
     try {
-      final response = await _dio.post(kLoginUserEndpoint,
+      final response = await _dio.post(kCreateUserEndpoint,
           data: jsonEncode({
-            'email': email,
-            'password': password,
+            'createdAt': createdAt,
+            'name': name,
+            'avatar': avatar,
           }),
           options: Options(headers: {'Content-Type': 'application/json'}));
 
@@ -66,7 +69,7 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
         );
       }
 
-      return List<DataMap>.from(jsonDecode(response.data) as List)
+      return List<DataMap>.from(response.data as List)
           .map((userData) => UserModel.fromMap(userData))
           .toList();
     } on APIException {

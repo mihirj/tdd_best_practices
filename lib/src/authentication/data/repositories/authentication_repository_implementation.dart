@@ -15,8 +15,9 @@ class AuthenticationRepositoryImplementation
 
   @override
   ResultVoid createUser({
-    required String email,
-    required String password,
+    required String createdAt,
+    required String name,
+    required String avatar,
   }) async {
     // Test-Driven Development
     //  call the remote data source
@@ -25,9 +26,10 @@ class AuthenticationRepositoryImplementation
     // check if when the remoteDataSource throws an exception,
     // we return a failure
     try {
-      await _remoteDataSource.loginUser(
-        email: email,
-        password: password,
+      await _remoteDataSource.createUser(
+        createdAt: createdAt,
+        name: name,
+        avatar: avatar,
       );
       return const Right(null);
     } on APIException catch (e) {

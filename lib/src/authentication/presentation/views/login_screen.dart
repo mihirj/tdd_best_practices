@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tdd_practice/src/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:tdd_practice/src/authentication/presentation/widgets/add_user_dialog.dart';
 import 'package:tdd_practice/src/authentication/presentation/widgets/loading_column.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,17 +12,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
-  // void getUsers() {
-  //   context.read<AuthenticationBloc>().getUsers();
-  // }
+  void getUsers() {
+    context.read<AuthenticationBloc>().add(const GetUserEvent());
+  }
 
   @override
   void initState() {
     super.initState();
-    // getUsers();
+    getUsers();
   }
 
   @override
@@ -32,57 +32,23 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
-        } else if (state is UserLoggedIn) {
-          // getUsers();
+        } else if (state is UserCreated) {
+          getUsers();
         }
       },
       builder: (context, state) {
+        final users = state is UsersLoaded ? state.users : [];
         return Scaffold(
           body: SafeArea(
-            child: state is GettingUsers
-                ? const LoadingColumn(message: 'Fetching users')
-                : state is LogginUser
-                    ? const LoadingColumn(message: 'Creating users')
-                    : Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            TextField(
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: const InputDecoration(
-                                hintText: 'Email',
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextField(
-                              controller: passwordController,
-                              keyboardType: TextInputType.visiblePassword,
-                              decoration: const InputDecoration(
-                                hintText: 'Password',
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                context.read<AuthenticationBloc>().add(
-                                      LoginUserEvent(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      ),
-                                    );
-                              },
-                              child: const Text('Login'),
-                            ),
-                          ],
-                        ),
-                      ),
-          )
-          /*Center(
+              child: state is GettingUsers
+                  ? const LoadingColumn(message: 'Fetching users')
+                  : state is CreatingUser
+                      ? const LoadingColumn(message: 'Creating users')
+                      : Center(
                           child: ListView.builder(
-                            itemCount: state.users.length,
+                            itemCount: users.length,
                             itemBuilder: (context, index) {
-                              final user = state.users[index];
+                              final user = users[index];
                               return ListTile(
                                 leading: Image.network(user.avatar),
                                 title: Text(user.name),
@@ -90,9 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                           ),
-                        )*/
-          ,
-/*          floatingActionButton: FloatingActionButton.extended(
+                        )),
+          floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
               await showDialog(
                 context: context,
@@ -100,15 +65,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   nameController: nameController,
                 ),
               );
-              // context.read<AuthenticationCubit>().createUser(
-              //       createdAt: DateTime.now().toString(),
-              //       name: ,
-              //       avatar: avatar,
+              // if (!context.mounted) return;
+              // context.read<AuthenticationBloc>().add(
+              //       CreateUserEvent(
+              //         createdAt: DateTime.now().toString(),
+              //         name: nameController.text,
+              //         avatar:
+              //             'https://avatars.githubusercontent.com/u/27058093',
+              //       ),
               //     );
             },
             icon: const Icon(Icons.add),
             label: const Text('Add User'),
-          ),*/
+          ),
         );
       },
     );

@@ -5,8 +5,9 @@ abstract class AuthenticationRepository {
   const AuthenticationRepository();
 
   ResultVoid createUser({
-    required String email,
-    required String password,
+    required String createdAt,
+    required String name,
+    required String avatar,
   });
 
   ResultFuture<List<User>> getUsers();

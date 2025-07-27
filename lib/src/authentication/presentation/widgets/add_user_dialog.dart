@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tdd_practice/src/authentication/presentation/bloc/authentication_bloc.dart';
 
 class AddUserDialog extends StatelessWidget {
   const AddUserDialog({super.key, required this.nameController});
@@ -32,11 +34,11 @@ class AddUserDialog extends StatelessWidget {
                   const avatar =
                       'https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg';
                   final name = nameController.text.trim();
-                  // context.read<AuthenticationBloc>().createUser(
-                  //       createdAt: DateTime.now().toString(),
-                  //       name: name,
-                  //       avatar: avatar,
-                  //     );
+                  context.read<AuthenticationBloc>().add(CreateUserEvent(
+                        createdAt: DateTime.now().toString(),
+                        name: name,
+                        avatar: avatar,
+                      ));
                   nameController.clear();
                   Navigator.of(context).pop();
                 },
