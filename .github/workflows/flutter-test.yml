@@ -32,6 +32,13 @@ jobs:
         with:
           flutter-version: "3.24.3"
 
+      - name: Create .env file
+        run: |
+          touch .env
+          echo API_BASE_URL=${{ secrets.API_BASE_URL }} >> .env
+          echo STATIC_API_KEY=${{ secrets.STATIC_API_KEY }} >> .env
+          cat .env
+
       - name: Install dependencies
         run: flutter pub get
 
