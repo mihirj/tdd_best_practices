@@ -62,7 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       const Icon(Icons.error_outline),
                                 ),
                                 title: Text(user.name),
-                                subtitle: Text(user.createdAt.substring(10)),
+                                subtitle: Text(
+                                  user.createdAt.length > 10
+                                      ? user.createdAt.substring(10)
+                                      : user.hashCode,
+                                ),
                               );
                             },
                           ),

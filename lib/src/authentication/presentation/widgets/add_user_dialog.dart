@@ -34,6 +34,22 @@ class AddUserDialog extends StatelessWidget {
                   const avatar =
                       'https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg';
                   final name = nameController.text.trim();
+                  if (name.isEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Input Error'),
+                        content: const Text('Please enter a username'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
                   context.read<AuthenticationBloc>().add(CreateUserEvent(
                         createdAt: DateTime.now().toString(),
                         name: name,
