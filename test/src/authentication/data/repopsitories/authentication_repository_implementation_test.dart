@@ -46,7 +46,10 @@ void main() {
 
         //act
         final result = await repoImpl.createUser(
-            createdAt: createdAt, name: name, avatar: avatar);
+          createdAt: createdAt,
+          name: name,
+          avatar: avatar,
+        );
 
         //assert
         expect(result, equals(const Right(null)));
@@ -89,7 +92,10 @@ void main() {
 
         verify(
           () => remoteDataSource.createUser(
-              createdAt: createdAt, name: name, avatar: avatar),
+            createdAt: createdAt,
+            name: name,
+            avatar: avatar,
+          ),
         ).called(1);
         verifyNoMoreInteractions(remoteDataSource);
       },

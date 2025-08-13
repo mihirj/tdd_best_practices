@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tdd_practice/core/usercase/usecase.dart';
+import 'package:tdd_practice/core/usecase/usecase.dart';
 import 'package:tdd_practice/core/utils/typedef.dart';
 import 'package:tdd_practice/src/authentication/domain/repositories/authentication_repository.dart';
 
@@ -16,8 +16,7 @@ class CreateUser extends UsecaseWithParam<void, CreateUserParams> {
       );
 }
 
-class CreateUserParams
-    extends Equatable {
+class CreateUserParams extends Equatable {
   final String createdAt;
   final String name;
   final String avatar;
