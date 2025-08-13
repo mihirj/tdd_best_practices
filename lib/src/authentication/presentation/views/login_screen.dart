@@ -25,6 +25,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
@@ -50,7 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             itemBuilder: (context, index) {
                               final user = users[index];
                               return ListTile(
-                                leading: Image.network(user.avatar),
+                                leading: Image.network(
+                                  user.avatar,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.error_outline),
+                                ),
                                 title: Text(user.name),
                                 subtitle: Text(user.createdAt.substring(10)),
                               );
@@ -65,15 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   nameController: nameController,
                 ),
               );
-              // if (!context.mounted) return;
-              // context.read<AuthenticationBloc>().add(
-              //       CreateUserEvent(
-              //         createdAt: DateTime.now().toString(),
-              //         name: nameController.text,
-              //         avatar:
-              //             'https://avatars.githubusercontent.com/u/27058093',
-              //       ),
-              //     );
             },
             icon: const Icon(Icons.add),
             label: const Text('Add User'),

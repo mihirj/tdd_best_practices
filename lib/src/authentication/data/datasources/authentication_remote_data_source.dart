@@ -48,10 +48,10 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
     } on DioException catch (e) {
       throw APIException(
         message: e.response?.data?["message"] ?? 'Unknown error occurred',
-        statusCode: e.response?.statusCode ?? 505,
+        statusCode: e.response?.statusCode ?? 500,
       );
     } catch (e) {
-      throw APIException(message: e.toString(), statusCode: 505);
+      throw APIException(message: e.toString(), statusCode: 500);
     }
   }
 

@@ -11,6 +11,7 @@ import 'package:tdd_practice/src/authentication/presentation/bloc/authentication
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  await dotenv.load();
   sl
     // App logics
     ..registerFactory(
@@ -33,10 +34,8 @@ Future<void> init() async {
 
     // External Dependencies
     ..registerLazySingleton(() => Dio(BaseOptions(
-          baseUrl: dotenv.env['API_BASE_URL'] ?? '',
+          baseUrl: dotenv.env['API_BASE_URL']!,
           connectTimeout: const Duration(seconds: 15),
           receiveTimeout: const Duration(seconds: 15),
         )));
-
-  await dotenv.load();
 }
