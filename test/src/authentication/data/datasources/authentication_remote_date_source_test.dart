@@ -130,7 +130,7 @@ void main() {
             (_) async {
               return Response(
                 requestOptions: RequestOptions(path: kGetUserEndpoint),
-                data: jsonEncode([tUsers.first.toMap()]),
+                data: [tUsers.first.toMap()],
                 statusCode: 200,
               );
             },
